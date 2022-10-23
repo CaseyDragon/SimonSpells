@@ -1,0 +1,56 @@
+.titleBar {
+    background: grey;
+}
+
+.titleSpot {
+    margin: auto;
+    height: 90 px;
+    width: 400px;
+    background: black;
+    color: white;
+    font-size: 40px;
+    text-align: center;
+    border-radius: 20%;
+    border: solid 2px white;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 300px;
+    top: 50 px;
+    width: 600 px;
+    height: 400px;
+    background-color: lightblue;
+    overflow: auto;
+    animation-name: animatemodal;
+     animation-duration: 1s
+}
+
+@keyframes animatemodal {
+    from {top: -300px; opacity: 0}
+    to {top: 50; opacity: 1}
+  }
+
+.directions {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: 300px;
+    width:500px;
+    margin: 100 px auto;
+}
+
+.footer {
+    text-align: right;
+}
+
+.close-button {
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    border-radius: 10%;
+    border: 2px solid white;
+}

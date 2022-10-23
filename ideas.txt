@@ -1,0 +1,59 @@
+answers to davids questions
+
+keyboard, gladiator, flex box( so i dont have to constantly fix letter spaces?) and 
+array methods, but honestly ill probably reference most of them at some point
+
+
+2 & 4. not sure if this is tracking or store or both, but my thought is that I would 
+push the user input into an array and also use reduce to keep track of the number of turns and 
+then use that number -1 as a way to compare the users letter array to the letters array from the 
+split word.
+which brings us to to my words that i plan to store in an array and use math.random to choose 
+a word
+and then split" to split it into letters that are then put back into an array. 
+that array would be used to display the letters to spell as well as compare the user input array 
+to determine 1. if the turn was complete by comparing up until index = to the number of the 
+turns -1 and then ultimately comparing for game win conditions if the whole word matches
+
+
+opening scene:
+game opens with the game board blank and then runs through a quick pre done demo of the word simon
+leaves screen showing the 5 circles that 'simon" will use and then shows the 5 circles the player 
+will use to copy the spelling
+
+silver level:
+ start up will include a hint button that will restart the turn aka reshow the spelling
+up until this turn and a choose new word that will restart the game with a new word.
+
+gold level:
+ includes a keyboard for the player to click on so maybe could use in mobile/ipad easer
+
+game play set up:
+
+compile an array of five letter words
+math.random to pick a word
+split the word into letters
+display the letters in the circle divs
+letters disappear
+
+silver level:
+includes words bigger than 5 letters
+
+game play:
+letterArray[0] is displayed in the first divs
+user then clicks the same letter and that is recognized by an event listener looking for that letter
+that letter is then pushed into an array and compared to the broken word letterArray
+reduce will be being used to track the number of turns that has happened and also for comparing
+the user input to the letterArray by comparing the index up until number of turns -1.
+if the first 2 letters are equal then the turn is complete and the next letter is shown(most likely
+using an for look or while or some sort of iteration)  if the user gets the next 2 letters correct
+than they will progress to the next turn which has 3 letters and so on
+win condition is when all 5 letters match the original array
+
+silver level: will check if the entire user array equals the entire letter array every turn to check 
+for a win as the words will not all be the same length
+
+extra details:
+if the wrong letter is selected an alert will show that turn will start over so as to not 
+mess up the counter?
+
