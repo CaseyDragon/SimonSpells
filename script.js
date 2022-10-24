@@ -25,31 +25,21 @@ console.log(getAWord)
 
 
 //code for splitting the word into an array
-const spellIt = getAWord.split('');
+const spellIt = getAWord.split('');//array of letters that spell the word
 console.log(spellIt)
 
 //create the circles for the spelling Word to go into
 const teachingSpot = document.querySelector('.simonSpells')//renames where the spelling word is shown
 
-spellIt.forEach((spellingWordLetter, spellingWordLetterIndex) => {
-   const showMeTheLetter = document.createElement('div') //creates the circle divs that show the example
-   showMeTheLetter.setAttribute('id', 'spellingWordLetter-' + spellingWordLetterIndex)//gives each circle an id of the number of its place in the guess array
-     teachingSpot.appendChild(showMeTheLetter)//actually adds the spots to the page
-    showMeTheLetter.classList.add('circle') //gives each one a class of circle for the sake of styling
-})
+for (i=0; i< spellIt.length; i++) {
+    const showMeTheLetter = document.createElement('div') //creates a dvi for every letter in the array
+    showMeTheLetter.setAttribute('id', 'spellingLetter-' + spellIt[i]) //each each div an id of the letter at that index number
+    const correctSpelling = spellIt[i];//gives a name to the letters in the index so they can be put in the div
+    showMeTheLetter.innerHTML = correctSpelling;//puts letters into the divs
+    teachingSpot.appendChild(showMeTheLetter)//actually add the divs to the page
+    showMeTheLetter.classList.add('circle')//makes them cirlcles
 
-//getting the spelling Word into the circles
-// currentSpellCircle = 0; //gives the position that we are currently typing in
-// const spellingWord = (spellingWordLetter) => {
-//     if (currentSpellCircle < 5){
-//     const spellCircle = document.querySelector('#eachGuessLetter-' + currentSpellCircle)// renames each circle with its place in the row
-//     circle.textContent = spellingWordLetter; //sets the text inside of the circle to be what the player clicks on
-//     spellIt[currentSpellCircle]= spellingWordLetter; // places that letter in the actual circle on the game board
-//     currentSpellCircle ++;//iterates to the next circle
-//     console.log(spellIt)//just shows that the letters are making it to the guess array
-// }
-// }
-
+}
 
 
 //keyboard buttons and getting the letters to console when clicked
