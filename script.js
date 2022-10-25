@@ -10,6 +10,38 @@ setTimeout(openModal, 1000);
 close.addEventListener("click", () => { modal.style.display = 'none'; });
 
 
+//creating a start button so the word doesnt show up until I want it to or as i want it to
+const buttonRow = document.querySelector(".buttonRow")
+const startButton = document.createElement('button')
+    startButton.classList.add('start')
+    startButton.innerText = 'Start';
+    buttonRow.appendChild(startButton)
+    startButton.addEventListener('click', gameStart)
+
+//create a button to restart the game
+
+const restartButton = document.createElement('button');
+    restartButton.classList.add('start')
+    buttonRow.appendChild(restartButton)
+    restartButton.innerText = 'Try Again'
+    restartButton.addEventListener('click', restart)
+
+
+//create a function to restart the game, commented out until ready to use cause it breaks stuff
+function restart(text) {
+    console.log("lets try that again")
+    // alert(text);
+    // spellIt = [];
+    // myGuess = [];
+    // level = 0;
+    // letterKeys.classList.add(waitToClick);
+}
+
+
+//create a function to start the game
+function gameStart() {
+    console.log("lets the games begin")
+}
 
 
 //code for picking a word, using an array and math random to select one 
@@ -40,6 +72,8 @@ for (i = 0; i < spellIt.length; i++) {
     showMeTheLetter.classList.add('circle')//makes them cirlcles
 
 }
+
+
 
 
 //keyboard buttons and getting the letters to console when clicked
