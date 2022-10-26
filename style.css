@@ -68,9 +68,7 @@
     flex-wrap: wrap;
 }
 
-.waitYourTurn {
-    pointer-events: none;
-}
+
 
 .buttonKeys {
     height: 55px;
@@ -138,8 +136,4 @@
     border-radius: 10%;
     border: 2px solid white;
     padding: 20px;
-}
-
-.wait-your-turn {
-    pointer-events: none;
 }
