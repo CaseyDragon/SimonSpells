@@ -30,17 +30,11 @@ const restartButton = document.createElement('button');
 //create a function to restart the game, commented out until ready to use cause it breaks stuff
 function restart(text) {
     console.log("lets try that again")
-    // alert(text);
-    // spellIt = [];
-    // myGuess = [];
-    // level = 0;
-    // letterKeys.classList.add(waitToClick);
-}
-
-
-//create a function to start the game
-function gameStart() {
-    console.log("lets the games begin")
+    alert(text);
+    nextLetter = [];
+    myGuess = [];
+    turn = 0;
+    letterKeys.classList.add(waitYourTurn);
 }
 
 
@@ -66,11 +60,11 @@ const teachingSpot = document.querySelector('.simonSpells')//renames where the s
 for (i = 0; i < spellIt.length; i++) {
     const showMeTheLetter = document.createElement('div') //creates a dvi for every letter in the array
     showMeTheLetter.setAttribute('id', 'spellingLetter-' + spellIt[i]) //each each div an id of the letter at that index number
+    showMeTheLetter.setAttribute ('id', 'letter-' + i )// hopefully give the letter an number id as well
     const correctSpelling = spellIt[i];//gives a name to the letters in the index so they can be put in the div
     showMeTheLetter.innerHTML = correctSpelling;//puts letters into the divs
     teachingSpot.appendChild(showMeTheLetter)//actually add the divs to the page
     showMeTheLetter.classList.add('circle')//makes them cirlcles
-
 }
 
 
@@ -93,6 +87,7 @@ function enterLetter(letter) {//function added to each letterKey button
     addLetter(letter);//adds letter to the circles below
 }
 
+
 letters.forEach(letter => {
     const letterKey = document.createElement('button') //makes a button for each letter in the array
     letterKey.textContent = letter //makes the letter show up on the key
@@ -100,18 +95,6 @@ letters.forEach(letter => {
     letterKey.addEventListener('click', () => enterLetter(letter)); //when button is clicked enter letter function from line 35 is used
     letterKeys.appendChild(letterKey); // adds the buttons to the page
     letterKey.classList.add('buttonKeys') //styling for buttons
-})
-
-//entry field set up
-const spellingSpot = document.querySelector('.youSpell')//names the div where the game is played
-
-const myGuess = ['', '', '', '', '']; //this array represents the letters that the player enters in the circles
-
-myGuess.forEach((eachGuessLetter, eachGuessLetterIndex) => {
-    const letterGoesHere = document.createElement('div') //creates the divs that are the circles where the players letters go
-    letterGoesHere.setAttribute('id', 'eachGuessLetter-' + eachGuessLetterIndex)//gives each circle an id of the number of its place in the guess array
-    spellingSpot.appendChild(letterGoesHere)//actually adds the spots to the page
-    letterGoesHere.classList.add('circle') //gives each one a class of circle for the sake of styling
 })
 
 //getting letters to show up in entry field
@@ -126,6 +109,18 @@ function addLetter(letter) {
     }
 }
 
+//entry field set up
+const spellingSpot = document.querySelector('.youSpell')//names the div where the game is played
+
+const myGuess = ['', '', '', '', '']; //this array represents the letters that the player enters in the circles
+
+myGuess.forEach((eachGuessLetter, eachGuessLetterIndex) => {
+    const letterGoesHere = document.createElement('div') //creates the divs that are the circles where the players letters go
+    letterGoesHere.setAttribute('id', 'eachGuessLetter-' + eachGuessLetterIndex)//gives each circle an id of the number of its place in the guess array
+    spellingSpot.appendChild(letterGoesHere)//actually adds the spots to the page
+    letterGoesHere.classList.add('circle') //gives each one a class of circle for the sake of styling
+})
+
 //deleting letters 
 function oopsKey() {
     if (currentCircle > 0) {
@@ -139,18 +134,70 @@ function oopsKey() {
 //very basic checking if the lines are the same will need a lot of work but basic ooutline to get started
 function checkIt() {
     // if (currentCircle === 5) {//will change to match each iteration of the game to add letters using an index
-    const answer = myGuess.join('');
-    if (getAWord === answer) {//check it the 2 arrays are the same
-        alert('yay, you did it!');
-    } else {
-        alert('not quite but good try!')
-    }
+    // const answer = myGuess.join('');
+    // if (getAWord === answer) {//check it the 2 arrays are the same
+    //     alert('yay, you did it!');
+    // } else {
+    //     alert('not quite but good try!')
     // }
+    // }
+    if (myGuess !== nextLetter) {
+        cosole.log('not it');
+        turn -= 1;
+        setTimeout(() => {
+          nextTurn();
+        }, 1000);
+        return
+      } else if (myGuess === nextLetter) {
+        console.log('great job');
+        setTimeout(()=> {
+          nextTurn();
+        }, 1000);
+        return;
+      }
+
 }
 
 
 
 //show spellit letters one at a time 
+function gameStart() {
+    console.log("lets the games begin")
+    
+    simonsTurn();
+}
+//set up turn plays so that the computer displays one letter at a time
+let turn = 0;//keeps track of the turns
+
+function simonsTurn() {
+    turn +=1; //increases the turn number above
+    // buttonKeys.classList.add(waitYourTurn);// NO CHEATING! makes it so player cant click until the letters disappear
+    const nextLetter = [];
+    nextLetter.push(spellIt[turn]);
+    // playTurn(nextLetter);
+    //spellIt = [nextLetter]; not sure about this logic here i think im confused
+    setTimeout(() => {playerTurn(turn);
+    }, turn * 500 + 1000)
+}
+
+// function playTurn(nextLetter) {
+//         nextLetter.forEach(() => {
+//             setTimeout(() => {
+//                 letterDisplay();
+//             }, (turn + 1) * 500)
+//         })
+// }
+
+// function letterDisplay() {
+//     showMeTheLetter.classList.add("highlighted");
+// }
+
+// all this is going into the players turn
+function playerTurn(turn) {
+    letterKeys.classList.remove("waitYourTurn"); //allows player to type during turn
+
+//checkIt() not sure if I want it auto check or if it should be manual yet
+}
 //compare my guess with spell it after each letter
 //timeout to make example show and then disappear
 

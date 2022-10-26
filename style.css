@@ -50,7 +50,14 @@
     background-color: lightblue;
     font-size: 40px;
     color: black;
+}
 
+.highlighted {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: blue;
+    margin: 10px 10px 10px 10px;
 
 }
 
@@ -59,6 +66,10 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.waitYourTurn {
+    pointer-events: none;
 }
 
 .buttonKeys {
@@ -129,6 +140,6 @@
     padding: 20px;
 }
 
-.wait-to-click {
+.wait-your-turn {
     pointer-events: none;
 }
