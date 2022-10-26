@@ -28,6 +28,11 @@ const startButton = document.createElement('button')
     buttonRow.appendChild(startButton)
     startButton.addEventListener('click', playGame)
 
+//display to show game status
+const lettersLeft = document.createElement('div');
+    lettersLeft.classList.add('gameStatus');
+    lettersLeft.innerHTML= "how many letters left";
+    buttonRow.appendChild(lettersLeft);
 //create a button to restart the game
 
 const restartButton = document.createElement('button');
@@ -77,24 +82,23 @@ for (i = 0; i < spellIt.length; i++) {
     blankSpaces.classList.add('circle')//makes them cirlcles
 }
 
-//keyboard buttons and getting the letters to console when clicked
+//set up for the players circles
+const spellingSpot = document.querySelector('.youSpell')//names the div where the game is played
+
+const myGuess = ['', '', '', '', '']; //this array represents the letters that the player enters in the circles
+
+myGuess.forEach((eachGuessLetter, eachGuessLetterIndex) => {
+    const letterGoesHere = document.createElement('div') //creates the divs that are the circles where the players letters go
+    letterGoesHere.setAttribute('id', 'eachGuessLetter-' + eachGuessLetterIndex)//gives each circle an id of the number of its place in the guess array
+    spellingSpot.appendChild(letterGoesHere)//actually adds the spots to the page
+    letterGoesHere.classList.add('circle') //gives each one a class of circle for the sake of styling
+}) 
+
+//array of letters to make the keyboard
 const letterKeys = document.querySelector('.letterKeys');
 const letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'Oops!', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Check it!'];
 
-function enterLetter(letter) {//function added to each letterKey button
-    if (letter === 'Oops!') {
-        oopsKey();// functions from below that clears and moves backwards
-        return;//here I want to clear the letter and then be able to stop iterating and re enter a letter
-    }
-    if (letter === 'Check it!') {
-        checkIt(); //function from below to check if the 2 arrays are the same
-        //    return;
-        //here i want to run the actual comparing functions to determine whether it is correct
-    }
-    addLetter(letter);//adds letter to the circles below
-}
-
-
+//the actual keys to the key board
 letters.forEach(letter => {
     const letterKey = document.createElement('button') //makes a button for each letter in the array
     letterKey.textContent = letter //makes the letter show up on the key
@@ -103,6 +107,29 @@ letters.forEach(letter => {
     letterKeys.appendChild(letterKey); // adds the buttons to the page
     letterKey.classList.add('buttonKeys') //styling for buttons
 })
+
+//assigns a letter to the keys
+function enterLetter(letter) {//function added to each letterKey button
+    if (letter === 'Oops!') {
+        oopsKey();// functions from below that clears and moves backwards
+        return;//here I want to clear the letter and then be able to stop iterating and re enter a letter
+        }
+    if (letter === 'Check it!') {
+        checkIt(); //function from below to check if the 2 arrays are the same  
+        }
+    addLetter(letter);//adds letter to the circles
+}
+
+//deleting letters 
+function oopsKey() {
+    if (currentCircle > 0) {
+        currentCircle--;//iterates backwards to go back a circle
+        const circle = document.querySelector('#eachGuessLetter-' + currentCircle) //renames each spot with its index
+        circle.textContent = '';//resets the circle to blank
+        myGuess[currentCircle] = ''; //resets the array index to blank
+        playersWord[currentCircle] = '';//resets the comparision array space to blank
+    }
+}
 
 //getting letters to show up in entry field
 currentCircle = 0; //gives the position that we are currently typing in
@@ -118,28 +145,6 @@ function addLetter(letter) {
     }
 }
 
-//entry field set up
-const spellingSpot = document.querySelector('.youSpell')//names the div where the game is played
-
-const myGuess = ['', '', '', '', '']; //this array represents the letters that the player enters in the circles
-
-myGuess.forEach((eachGuessLetter, eachGuessLetterIndex) => {
-    const letterGoesHere = document.createElement('div') //creates the divs that are the circles where the players letters go
-    letterGoesHere.setAttribute('id', 'eachGuessLetter-' + eachGuessLetterIndex)//gives each circle an id of the number of its place in the guess array
-    spellingSpot.appendChild(letterGoesHere)//actually adds the spots to the page
-    letterGoesHere.classList.add('circle') //gives each one a class of circle for the sake of styling
-})
-
-//deleting letters 
-function oopsKey() {
-    if (currentCircle > 0) {
-        currentCircle--;//iterates backwards to go back a circle
-        const circle = document.querySelector('#eachGuessLetter-' + currentCircle) //renames each spot with its index
-        circle.textContent = '';//resets the circle to blank
-        myGuess[currentCircle] = ''; //resets the array index to blank
-        playersWord[currentCircle] = '';//resets the comparision array space to blank
-    }
-}
 
 // // //create a function to start the game
 function playGame() {//this is just the set up for the game not actually a turn
@@ -291,15 +296,15 @@ function checkIt(){
 }
   
   
-    function winGame (); {
+    function winGame() {
         bounceCircles();//visual affect
         lettersLeft.innerHTML = 'win'; //display some sort of win messgae
         on= false;//cant type anymore
         win = true;// congratulations
-        alert(YAY!!);//just for my own checking methods
+        alert('YAY!!');//just for my own checking methods
     }
   
-  bounceCircles() {//highlights all the circles so they are bigger and brighter
+  function bounceCircles() {//highlights all the circles so they are bigger and brighter
     document.querySelector(".circles").classList.add('highlighted')
   }
 
