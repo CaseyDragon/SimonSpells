@@ -46,10 +46,11 @@ const restartButton = document.createElement('button');
 function restart() {
     console.log("lets try that again")
     alert("lets play again");
-    noHighlights();//sets all the circles to default size and color
-    clearIntervalId();//clears all the timeouts
+    // noHighlights();//sets all the circles to default size and color
+    clearInterval();//clears all the timeouts
     turn = 0;//resets turns
     playGame();//starts the game again
+    lettersLeft.innerText= '5';
 }
 
 
@@ -71,13 +72,13 @@ console.log(spellIt)
 
 //create the circles for the spelling Word to go into
 const teachingSpot = document.querySelector('.simonSpells')//renames where the spelling word is shown
-
+let correctSpelling;
 for (i = 0; i < spellIt.length; i++) {
     const blankSpaces = document.createElement('div') //creates a dvi for every letter in the array
     blankSpaces.setAttribute('id', 'spellingLetter-' + spellIt[i]) //each each div an id of the letter at that index number
     blankSpaces.setAttribute ('id', 'letter-' + i )// hopefully give the letter an number id as well
-    const correctSpelling = spellIt[i];//gives a name to the letters in the index so they can be put in the div
-    blankSpaces.innerHTML = correctSpelling;//puts letters into the divs, but need to find a way to hide them until needed
+    correctSpelling = spellIt[i];//gives a name to the letters in the index so they can be put in the div
+    blankSpaces.innerHTML = '';//puts letters into the divs, but need to find a way to hide them until needed
     teachingSpot.appendChild(blankSpaces)//actually add the divs to the page
     blankSpaces.classList.add('circle')//makes them cirlcles
 }
@@ -156,19 +157,20 @@ function playGame() {//this is just the set up for the game not actually a turn
   turn = 0; //how many turns have been played
   lettersLeft.innerHTML = 5 - turn; //for the counter that i havent reated yet but to show how many letters are left and to display other messages
   correct = true;//nothing has been entered yet so it cant be incorrect yet
-  for (let i = 0; i< spellIt.length; i++){
-    simonsWord.push(spellIt(i)); //for loop to add the simons letters to simons word, i suspect that this is incorrect and will add all in one turn
-  }  
+  
+  simonsWord.push(spellIt[turn]); //get the letter from the index value equal to the number of turns
+  
   simonsTurn=true;//simon has to go first cause we dont know the word yet
-  intervalId=setInterval(gameRound, 800); //determines how long until gameRound starts
+  intervalId=setInterval(gameRound, 1000); //determines how long until gameRound starts
 }
+
 function gameRound() {//one full turn of play
     on = false;//player cant go yet
     if (characters == turn) {//i need the number of letters showing to equal the number of turns that have been played
-      clearIntervalId(IntervalId);//rests the timeout
+      clearInterval(this.IntervalId);//rests the timeout
       simonsTurn=false;//changes the turn not simons turn, aka players turn
       noHighlight();
-      on=true; //player can type now
+      on = true; //player can type now
     }
     if (simonsTurn) {//what is simon going to do
       noHighlight();//default is nothing highlighted
@@ -176,63 +178,120 @@ function gameRound() {//one full turn of play
         if (simonsWord[characters] == 0) firstLetter();//such as if the number of characters in simonsword is 1 we will use function firstletter
         if (simonsWord[characters] == 1) secondLetter();//and so on
         if (simonsWord[characters] == 2) thirdLetter();
-        if (simonsWord[characters] == 3) forthLetter();
+        if (simonsWord[characters] == 3) fourthLetter();
         if (simonsWord[characters] == 4) fifthLetter();
         characters++;// adds a charachter for the next round
-      },500);//pause cause we dont want everything at the same time
+      }, 500);//pause cause we dont want everything at the same time
     }
   }
   
   function firstLetter() {// if the character is zero i want to show the first letter as well as make the circle a little biger and brighter
-  
-    document.querySelector('#letter-1').classList.add('highlighted')
-    document.querySelector('#letter-1').style.display = 'block';
-    //display(x.style.display === "none") {
-      //x.style.display = "block";
+    setTimeout(()=> {
+        document.querySelector('#letter-1').classList.add('highlighted')
+        document.querySelector('#letter-1').innerHTML = spellIt[0];
+    }, 500)
+    document.querySelector('#letter-1').classList.remove('highlighted')
+    document.querySelector('#letter-1').innerHTML= '';
+
   }
   
   function secondLetter() { //for the second letter i want both the first and second letter to appear 
-   
-    document.querySelector('#letter-1').classList.add('highlighted')
-    document.querySelector('#letter-1').style.display = 'block';
-    document.querySelector('#letter-2').classList.add('highlighted')
-    document.querySelector('#letter-2').classList.remove('hideText')
+    setTimeout(()=> {
+        document.querySelector('#letter-1').classList.add('highlighted')
+        document.querySelector('#letter-1').innerHTML = spellIt[0];
+    }, 500);
+    setTimeout(()=> {
+        document.querySelector('#letter-2').classList.add('highlighted')
+        document.querySelector('#letter-2').innerHTML = spellIt[1];
+    }, 500)
+    document.querySelector('#letter-1').classList.remove('highlighted')
+    document.querySelector('#letter-1').innerHTML= '';
+    document.querySelector('#letter-2').classList.remove('highlighted')
+    document.querySelector('#letter-2').innerHTML= '';
   }
   
   function thirdLetter() {
-    document.querySelector('#letter-1').classList.add('highlighted')
-    document.querySelector('#letter-1').style.display = 'block';
-    document.querySelector('#letter-2').classList.add('highlighted')
-    document.querySelector('#letter-2').classList.remove('hideText')
-    document.querySelector('#letter-3').classList.add('highlighted')
-    document.querySelector('#letter-3').classList.remove('hideText')
+    setTimeout(()=> {
+        document.querySelector('#letter-1').classList.add('highlighted')
+        document.querySelector('#letter-1').innerHTML = spellIt[0];
+    }, 500);
+    setTimeout(()=> {
+        document.querySelector('#letter-2').classList.add('highlighted')
+        document.querySelector('#letter-2').innerHTML = spellIt[1];
+    }, 500)
+    setTimeout(()=> {
+        document.querySelector('#letter-3').classList.add('highlighted')
+        document.querySelector('#letter-3').innerHTML = spellIt[2];
+    }, 500)
+    document.querySelector('#letter-1').classList.remove('highlighted')
+    document.querySelector('#letter-1').innerHTML= '';
+    document.querySelector('#letter-2').classList.remove('highlighted')
+    document.querySelector('#letter-2').innerHTML= '';
+    document.querySelector('#letter-3').classList.remove('highlighted')
+    document.querySelector('#letter-3').innerHTML= '';
   }
   
   function fourthLetter() {
-     document.querySelector('#letter-1').classList.add('highlighted')
-    document.querySelector('#letter-1').style.display = 'block';
-    document.querySelector('#letter-2').classList.add('highlighted')
-    document.querySelector('#letter-2').classList.remove('hideText')
-    document.querySelector('#letter-3').classList.add('highlighted')
-    document.querySelector('#letter-3').classList.remove('hideText')
-    document.querySelector('#letter-4').classList.add('highlighted')
-    document.querySelector('#letter-4').classList.remove('hideText')
+    setTimeout(()=> {
+        document.querySelector('#letter-1').classList.add('highlighted')
+        document.querySelector('#letter-1').innerHTML = spellIt[0];
+    }, 500);
+    setTimeout(()=> {
+        document.querySelector('#letter-2').classList.add('highlighted')
+        document.querySelector('#letter-2').innerHTML = spellIt[1];
+    }, 500)
+    setTimeout(()=> {
+        document.querySelector('#letter-3').classList.add('highlighted')
+        document.querySelector('#letter-3').innerHTML = spellIt[2];
+    }, 500)
+    setTimeout(()=> {
+        document.querySelector('#letter-4').classList.add('highlighted')
+        document.querySelector('#letter-4').innerHTML = spellIt[2];
+    }, 500)
+    document.querySelector('#letter-1').classList.remove('highlighted')
+    document.querySelector('#letter-1').innerHTML= '';
+    document.querySelector('#letter-2').classList.remove('highlighted')
+    document.querySelector('#letter-2').innerHTML= '';
+    document.querySelector('#letter-3').classList.remove('highlighted')
+    document.querySelector('#letter-3').innerHTML= '';
+    document.querySelector('#letter-4').classList.remove('highlighted')
+    document.querySelector('#letter-4').innerHTML= '';
   }
   
   function fifthLetter() {
-    document.querySelector('#letter-1').classList.add('highlighted')
-    document.querySelector('#letter-1').style.display = 'block';
-    document.querySelector('#letter-2').classList.add('highlighted')
-    document.querySelector('#letter-2').classList.remove('hideText')
-    document.querySelector('#letter-3').classList.add('highlighted')
-    document.querySelector('#letter-3').classList.remove('hideText')
-    document.querySelector('#letter-4').classList.add('highlighted')
-    document.querySelector('#letter-4').classList.remove('hideText')
-    document.querySelector('#letter-5').classList.add('highlighted')
-    document.querySelector('#letter-5').classList.remove('hideText')
+    setTimeout(()=> {
+        document.querySelector('#letter-1').classList.add('highlighted')
+        document.querySelector('#letter-1').innerHTML = spellIt[0];
+    }, 500);
+    setTimeout(()=> {
+        document.querySelector('#letter-2').classList.add('highlighted')
+        document.querySelector('#letter-2').innerHTML = spellIt[1];
+    }, 500)
+    setTimeout(()=> {
+        document.querySelector('#letter-3').classList.add('highlighted')
+        document.querySelector('#letter-3').innerHTML = spellIt[2];
+    }, 500)
+    setTimeout(()=> {
+        document.querySelector('#letter-4').classList.add('highlighted')
+        document.querySelector('#letter-4').innerHTML = spellIt[3];
+    }, 500)
+    setTimeout(()=> {
+        document.querySelector('#letter-5').classList.add('highlighted')
+        document.querySelector('#letter-5').innerHTML = spellIt[4];
+    }, 500)
+    document.querySelector('#letter-1').classList.remove('highlighted')
+    document.querySelector('#letter-1').innerHTML= '';
+    document.querySelector('#letter-2').classList.remove('highlighted')
+    document.querySelector('#letter-2').innerHTML= '';
+    document.querySelector('#letter-3').classList.remove('highlighted')
+    document.querySelector('#letter-3').innerHTML= '';
+    document.querySelector('#letter-4').classList.remove('highlighted')
+    document.querySelector('#letter-4').innerHTML= '';
+    document.querySelector('#letter-5').classList.remove('highlighted')
+    document.querySelector('#letter-5').innerHTML= '';
   }
 
-  function noHighlight () {//sets the circles to their normal default look
+  function noHighlight() {//sets the circles to their normal default look
     document.querySelector('.circle').classList.remove('highlighted')
   }
 
@@ -241,7 +300,7 @@ function playersTurn(){
     checkIt();
 }
 //very basic checking if the lines are the same will need a lot of work but basic ooutline to get started
-function checkIt() {
+// function checkIt() {
     // if (currentCircle === 5) {//will change to match each iteration of the game to add letters using an index
     // const answer = myGuess.join('');
     // if (getAWord === answer) {//check it the 2 arrays are the same
@@ -250,26 +309,26 @@ function checkIt() {
     //     alert('not quite but good try!')
     // }
     // }
-    if (myGuess !== nextLetter) {
-        cosole.log('not it');
-        turn -= 1;
-        setTimeout(() => {
-          nextTurn();
-        }, 1000);
-        return
-      } else if (myGuess === nextLetter) {
-        console.log('great job');
-        setTimeout(()=> {
-          nextTurn();
-        }, 1000);
-        return;
-      }
+//     if (myGuess !== nextLetter) {
+//         cosole.log('not it');
+//         turn -= 1;
+//         setTimeout(() => {
+//           nextTurn();
+//         }, 1000);
+//         return
+//       } else if (myGuess === nextLetter) {
+//         console.log('great job');
+//         setTimeout(()=> {
+//           nextTurn();
+//         }, 1000);
+//         return;
+//       }
 
-}
+// }
 
 function checkIt(){
   
-    if (playersWord[playersWord -1]!== simonsWord[simonsWord.length -1]) {
+    if (playersWord !== simonsWord) {
       correct = false;} // arrays are not equal that you are not correct
 
     if (playersWord.length = 5 && correct) {
@@ -277,12 +336,12 @@ function checkIt(){
     }
   
     if (correct == false) {//if the answer is not correct
-    bounceCircles(); //visual afffect to reset
-    lettersLeft.innerHTML = "oops"; 
-    setTimeout (() => {
-      lettersLeft.innerHTML = 5 - turn; //reset the letters left to correct number
-      noHighlight();//remove highlights
-    }, 800);
+        setTimeout (() => {
+            lettersLeft.innerHTML = "oops"; 
+            bounceCircles(); //visual afffect to reset
+        }, 1000);
+    lettersLeft.innerHTML = 5 - turn;
+    noHighlight();//remove highlights
     }
   
     if (turn == playersWord.length && correct && !win) { // everything is correct but you havent finsihed the word
@@ -291,7 +350,7 @@ function checkIt(){
     simonsTurn=true;//its simons turn again
     characters= 0; //reset the characters so we can use this for calculating win
     lettersLeft.innerHTML= 5 - turn; //counter will go down
-    intervalId = setIntervalVal(gameTurn, 800); //reset the interval timer
+    intervalId = setIntervalVal(gameRound, 1000); //reset the interval timer
     }
 }
   
