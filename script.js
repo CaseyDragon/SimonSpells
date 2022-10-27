@@ -16,8 +16,6 @@ let characters; //charachters entered by player on this turn
 let turn; //counts the turns that have passed
 let correct;// used to determie if the player input is correct
 let simonsTurn; //computers turn
-let intervalId;//used to clear timeouts
-let on = false;//hoping to use this so that the player can only use the keyboard on their turn
 let win;//cause we gotta win eventually, right?
 
 //creating a start button so the word doesnt show up until I want it to or as i want it to
@@ -45,12 +43,10 @@ restartButton.addEventListener('click', restart)
 //create a function to restart the game, commented out until ready to use cause it breaks stuff
 function restart() {
     console.log("lets try that again")
-    alert("lets play again");
+    lettersLeft.innerHTML = 'another!'
     // noHighlights();//sets all the circles to default size and color
-    clearInterval();//clears all the timeouts
-    turn = 0;//resets turns
+    // turn = 0;//resets turns
     playGame();//starts the game again
-    lettersLeft.innerText = '5';
 }
 
 
@@ -86,7 +82,7 @@ for (i = 0; i < spellIt.length; i++) {
 //set up for the players circles
 const spellingSpot = document.querySelector('.youSpell')//names the div where the game is played
 
-const myGuess = ['', '', '', '', '']; //this array represents the letters that the player enters in the circles
+let myGuess = ['', '', '', '', '']; //this array represents the letters that the player enters in the circles
 
 myGuess.forEach((eachGuessLetter, eachGuessLetterIndex) => {
     const letterGoesHere = document.createElement('div') //creates the divs that are the circles where the players letters go
@@ -104,7 +100,8 @@ letters.forEach(letter => {
     const letterKey = document.createElement('button') //makes a button for each letter in the array
     letterKey.textContent = letter //makes the letter show up on the key
     letterKey.setAttribute('id', letter) //gives each button the id of the letter that is to be
-    letterKey.addEventListener('click', () => enterLetter(letter)); //when button is clicked enter letter function from line 35 is used
+    letterKey.addEventListener('click', () => 
+        enterLetter(letter)); //when button is clicked enter letter function from line 35 is used
     letterKeys.appendChild(letterKey); // adds the buttons to the page
     letterKey.classList.add('buttonKeys') //styling for buttons
 })
@@ -112,18 +109,32 @@ letters.forEach(letter => {
 //assigns a letter to the keys
 function enterLetter(letter) {//function added to each letterKey button
     if (letter === 'Oops!') {
-        oopsKey();// functions from below that clears and moves backwards
+        if (currentCircle > 0) {
+            currentCircle--;//iterates backwards to go back a circle
+            const circle = document.querySelector('#eachGuessLetter-' + currentCircle) //renames each spot with its index
+            circle.textContent = '';//resets the circle to blank
+            myGuess[currentCircle] = ''; //resets the array index to blank
+            playersWord[currentCircle] = '';//resets the comparision array space to blank
+        }// functions from below that clears and moves backwards
         return;//here I want to clear the letter and then be able to stop iterating and re enter a letter
-    }
-    if (letter === 'Check it!') {
+    }else if (letter === 'Check it!') {
         checkIt(); //function from below to check if the 2 arrays are the same  
-    }
+    } else {
     addLetter(letter);//adds letter to the circles
-}
+}}
 
 // //deleting letters 
 function oopsKey() {
     if (currentCircle > 0) {
+        currentCircle--;//iterates backwards to go back a circle
+        const circle = document.querySelector('#eachGuessLetter-' + currentCircle) //renames each spot with its index
+        circle.textContent = '';//resets the circle to blank
+        myGuess[currentCircle] = ''; //resets the array index to blank
+        playersWord[currentCircle] = '';//resets the comparision array space to blank
+    }
+}
+function clearWord() {
+    while (currentCircle > 0) {
         currentCircle--;//iterates backwards to go back a circle
         const circle = document.querySelector('#eachGuessLetter-' + currentCircle) //renames each spot with its index
         circle.textContent = '';//resets the circle to blank
@@ -150,8 +161,7 @@ function addLetter(letter) {
 function playGame() {//this is just the set up for the game not actually a turn
     win = false;//cause no ones won yet
     simonsWord = [];//nothing in the arrray yet but simons letters will go hear
-    //empty now but players letters will be stored her
-    intervalId = 0;//still trying to figure this interval thing out but im pretty sure i need it
+    //empty now but players letters will be stored her  
     turn = 0; //how many turns have been played
     lettersLeft.innerHTML = 5 - turn; //for the counter that i havent reated yet but to show how many letters are left and to display other messages
     correct = true;//nothing has been entered yet so it cant be incorrect yet
@@ -162,7 +172,7 @@ function playGame() {//this is just the set up for the game not actually a turn
 }
 
 function gameRound() {//one full turn of play
-
+    lettersLeft.innerHTML= "Simon's Turn"; 
    
     // if (characters == turn) {//i need the number of letters showing to equal the number of turns that have been played
     //   clearInterval(this.IntervalId);//rests the timeout
@@ -242,7 +252,7 @@ function gameRound() {//one full turn of play
         }, 1000)
         setTimeout(() => {
             document.querySelector('#letter-3').classList.add('highlighted')
-            document.querySelector('#letter-3').innerHTML = spellIt[2];
+            document.querySelector('#letter-3').innerHTML = spellIt[3];
         }, 1000)
         document.querySelector('#letter-0').classList.remove('highlighted')
         document.querySelector('#letter-0').innerHTML = '';
@@ -286,14 +296,13 @@ function gameRound() {//one full turn of play
         document.querySelector('#letter-3').innerHTML = '';
         document.querySelector('#letter-4').classList.remove('highlighted')
         document.querySelector('#letter-4').innerHTML = '';
-        simonsWord.push(spellIt[5])
+        simonsWord.push(spellIt[4])
     }
 }
 
 function playersTurn(){
-    if (currentCircle > turn){
-        checkIt();
-    }
+    lettersLeft.innerHTML= "Your Turn"
+    
 }
 
     function noHighlight() {//sets the circles to their normal default look
@@ -302,52 +311,45 @@ function playersTurn(){
 
 
     function checkIt() {
-
-        if (playersWord == simonsWord) {
-            correct = true;
-        } // arrays are  equal that you are  correct
-
-        if (playersWord.length !== simonsWord.length) {
-            correct = false;}
-
-        if (playersWord !== simonsWord) {
-           correct= false}
-           
-         if (correct = false) {
-          turn--; 
-         setTimeout(() => {
-                lettersLeft.innerHTML = "oops";
+        lettersLeft.innerHTML = 'calculating...';
+        let is_same = (playersWord.length == simonsWord.length) && playersWord.every(function(element, index) {
+            return element === simonsWord[index]; 
+        });
+        console.log('is same',is_same)
+        console.log(turn)
+         if (!is_same) {//if the arrays are not equal then try again and rest back one turn
+            turn--; 
+            console.log('not the same')
+            setTimeout(() => {
+                lettersLeft.innerHTML = "not quite";
                 // bounceCircles(); //visual afffect to reset
-            }, 1000);
+                }, 1000);
             lettersLeft.innerHTML = 5 - turn;
             noHighlight();//remove highlights
-        
-        }
-
-        if (turn == playersWord.length && correct && turn < 5) { // everything is correct but you havent finsihed the word
+         } else if (turn +1 === playersWord.length && is_same && turn < 4) { // everything is correct but you havent finsihed the word
+            console.log('next turn')
             turn++; // progress to the next turn
+            clearWord()
+            //remove the html
             playersWord = [];//reset the array for the next turn
             myGuess = [];
+            //remove the html
             simonsTurn = true;//its simons turn again
             lettersLeft.innerHTML = 5 - turn; //counter will go down
-            intervalId = setIntervalVal(gameRound, 1000); //reset the interval timer
+            gameRound(); //reset the interval timer
+            
+        } else if (playersWord.length === 5 && is_same) { //if the array is the correct length and letters then you win
+            
+            lettersLeft.innerHTML = 'win';
+            win = true;
+            // bounceCircles();//visual affect
+            //add a modal to offer another word/ round
         }
-
-        if (playersWord.length = 5 && correct) {
-            winGame(); //if the array is the correct length and letters then you win
-        }
+    }
     
 
-
-    function winGame() {
-        // bounceCircles();//visual affect
-        lettersLeft.innerHTML = 'win'; //display some sort of win messgae
-        // on = false;//cant type anymore
-        win = true;// congratulations
-        alert('YAY!!');//just for my own checking methods
-    }
 
     // function bounceCircles() {//highlights all the circles so they are bigger and brighter
     //     document.querySelector(".circles").classList.add('highlighted')
     // }
-    }
+    
