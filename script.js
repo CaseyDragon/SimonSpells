@@ -14,7 +14,6 @@ let simonsWord = [];//array that the computer word gets pushed into on each turn
 let playersWord = [];//array that the plays word gets pushed into for comparisions
 let characters; //charachters entered by player on this turn
 let turn; //counts the turns that have passed
-let correct;// used to determie if the player input is correct
 let simonsTurn; //computers turn
 let win;//cause we gotta win eventually, right?
 
@@ -36,7 +35,7 @@ buttonRow.appendChild(lettersLeft);
 const restartButton = document.createElement('button');
 restartButton.classList.add('start')
 buttonRow.appendChild(restartButton)
-restartButton.innerText = 'Try Again'
+restartButton.innerText = 'Play Again!'
 restartButton.addEventListener('click', restart)
 
 
@@ -44,8 +43,7 @@ restartButton.addEventListener('click', restart)
 function restart() {
     console.log("lets try that again")
     lettersLeft.innerHTML = 'another!'
-    // noHighlights();//sets all the circles to default size and color
-    // turn = 0;//resets turns
+    clearWord ();
     playGame();//starts the game again
 }
 
@@ -137,9 +135,9 @@ function clearWord() {
     while (currentCircle > 0) {
         currentCircle--;//iterates backwards to go back a circle
         const circle = document.querySelector('#eachGuessLetter-' + currentCircle) //renames each spot with its index
-        circle.textContent = '';//resets the circle to blank
-        myGuess[currentCircle] = ''; //resets the array index to blank
-        playersWord[currentCircle] = '';//resets the comparision array space to blank
+        circle.innerHTML = '';//resets the circle to blank
+        myGuess= []; //resets the array index to blank
+        playersWord=[];//resets the comparision array space to blank
     }
 }
 
@@ -159,6 +157,7 @@ function addLetter(letter) {
 
 // // //create a function to start the game
 function playGame() {//this is just the set up for the game not actually a turn
+    // simonChooses();
     win = false;//cause no ones won yet
     simonsWord = [];//nothing in the arrray yet but simons letters will go hear
     //empty now but players letters will be stored her  
@@ -173,29 +172,24 @@ function playGame() {//this is just the set up for the game not actually a turn
 
 function gameRound() {//one full turn of play
     lettersLeft.innerHTML= "Simon's Turn"; 
-   
-    // if (characters == turn) {//i need the number of letters showing to equal the number of turns that have been played
-    //   clearInterval(this.IntervalId);//rests the timeout
-    //   simonsTurn=false;//changes the turn not simons turn, aka players turn
-    //   noHighlight();
-    //   on = true; //player can type now
-    // }
+  
     if (simonsTurn) {//what is simon going to do
        if (turn == 0) firstLetter();//such as if the number of characters in simonsword is 1 we will use function firstletter
         if (turn == 1) secondLetter();//and so on
         if (turn == 2) thirdLetter();
         if (turn == 3) fourthLetter();
         if (turn == 4) fifthLetter();
-     
-    }
+      }
 
+  
     function firstLetter() {// if the character is zero i want to show the first letter as well as make the circle a little biger and brighter
-        setTimeout(() => {
+       
             document.querySelector('#letter-0').classList.add('highlighted')
             document.querySelector('#letter-0').textContent = spellIt[0];
-        }, 500)
-        document.querySelector('#letter-0').classList.remove('highlighted')
+       setTimeout(()=> {
+            document.querySelector('#letter-0').classList.remove('highlighted')
         document.querySelector('#letter-0').innerHTML = '';
+       }, 1000);
         simonsWord.push(spellIt[0])
     }
 
@@ -203,15 +197,17 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-0').classList.add('highlighted')
             document.querySelector('#letter-0').innerHTML = spellIt[0];
-        }, 1000);
+        }, 500);
         setTimeout(() => {
             document.querySelector('#letter-1').classList.add('highlighted')
             document.querySelector('#letter-1').innerHTML = spellIt[1];
-        }, 500)
+        }, 1000);
+       setTimeout (() => {
         document.querySelector('#letter-0').classList.remove('highlighted')
         document.querySelector('#letter-0').innerHTML = '';
         document.querySelector('#letter-1').classList.remove('highlighted')
         document.querySelector('#letter-1').innerHTML = '';
+       }, 2000);
         simonsWord.push(spellIt[1])
     }
 
@@ -219,7 +215,7 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-0').classList.add('highlighted')
             document.querySelector('#letter-0').innerHTML = spellIt[0];
-        }, 1000);
+        }, 500);
         setTimeout(() => {
             document.querySelector('#letter-1').classList.add('highlighted')
             document.querySelector('#letter-1').innerHTML = spellIt[1];
@@ -227,13 +223,15 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-2').classList.add('highlighted')
             document.querySelector('#letter-2').innerHTML = spellIt[2];
-        }, 500)
+        }, 1500)
+        setTimeout(()=> {
         document.querySelector('#letter-0').classList.remove('highlighted')
         document.querySelector('#letter-0').innerHTML = '';
         document.querySelector('#letter-1').classList.remove('highlighted')
         document.querySelector('#letter-1').innerHTML = '';
         document.querySelector('#letter-2').classList.remove('highlighted')
         document.querySelector('#letter-2').innerHTML = '';
+        }, 2500);
         simonsWord.push(spellIt[2]);
     }
 
@@ -241,7 +239,7 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-0').classList.add('highlighted')
             document.querySelector('#letter-0').innerHTML = spellIt[0];
-        }, 1000);
+        }, 500);
         setTimeout(() => {
             document.querySelector('#letter-1').classList.add('highlighted')
             document.querySelector('#letter-1').innerHTML = spellIt[1];
@@ -249,11 +247,12 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-2').classList.add('highlighted')
             document.querySelector('#letter-2').innerHTML = spellIt[2];
-        }, 1000)
+        }, 1500)
         setTimeout(() => {
             document.querySelector('#letter-3').classList.add('highlighted')
             document.querySelector('#letter-3').innerHTML = spellIt[3];
-        }, 1000)
+        }, 2000)
+        setTimeout (() => {
         document.querySelector('#letter-0').classList.remove('highlighted')
         document.querySelector('#letter-0').innerHTML = '';
         document.querySelector('#letter-1').classList.remove('highlighted')
@@ -262,6 +261,7 @@ function gameRound() {//one full turn of play
         document.querySelector('#letter-2').innerHTML = '';
         document.querySelector('#letter-3').classList.remove('highlighted')
         document.querySelector('#letter-3').innerHTML = '';
+        }, 3000);
         simonsWord.push(spellIt[3]);
     }
 
@@ -269,7 +269,7 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-0').classList.add('highlighted')
             document.querySelector('#letter-0').innerHTML = spellIt[0];
-        }, 1000);
+        }, 500);
         setTimeout(() => {
             document.querySelector('#letter-1').classList.add('highlighted')
             document.querySelector('#letter-1').innerHTML = spellIt[1];
@@ -277,15 +277,16 @@ function gameRound() {//one full turn of play
         setTimeout(() => {
             document.querySelector('#letter-2').classList.add('highlighted')
             document.querySelector('#letter-2').innerHTML = spellIt[2];
-        }, 1000)
+        }, 1500)
         setTimeout(() => {
             document.querySelector('#letter-3').classList.add('highlighted')
             document.querySelector('#letter-3').innerHTML = spellIt[3];
-        }, 1000)
+        }, 2000)
         setTimeout(() => {
             document.querySelector('#letter-4').classList.add('highlighted')
             document.querySelector('#letter-4').innerHTML = spellIt[4];
-        }, 1000)
+        }, 2500)
+        setTimeout(()=> {
         document.querySelector('#letter-0').classList.remove('highlighted')
         document.querySelector('#letter-0').innerHTML = '';
         document.querySelector('#letter-1').classList.remove('highlighted')
@@ -296,8 +297,11 @@ function gameRound() {//one full turn of play
         document.querySelector('#letter-3').innerHTML = '';
         document.querySelector('#letter-4').classList.remove('highlighted')
         document.querySelector('#letter-4').innerHTML = '';
+        }, 3500);
         simonsWord.push(spellIt[4])
     }
+    lettersLeft.innerHTML = "Your Turn"
+
 }
 
 function playersTurn(){
@@ -305,12 +309,7 @@ function playersTurn(){
     
 }
 
-    function noHighlight() {//sets the circles to their normal default look
-        document.querySelector('.circle').classList.remove('highlighted')
-    }
-
-
-    function checkIt() {
+ function checkIt() {
         lettersLeft.innerHTML = 'calculating...';
         let is_same = (playersWord.length == simonsWord.length) && playersWord.every(function(element, index) {
             return element === simonsWord[index]; 
@@ -318,38 +317,41 @@ function playersTurn(){
         console.log('is same',is_same)
         console.log(turn)
          if (!is_same) {//if the arrays are not equal then try again and rest back one turn
-            turn--; 
             console.log('not the same')
-            setTimeout(() => {
-                lettersLeft.innerHTML = "not quite";
-                // bounceCircles(); //visual afffect to reset
-                }, 1000);
-            lettersLeft.innerHTML = 5 - turn;
-            noHighlight();//remove highlights
+            lettersLeft.innerHTML = "so close";
+            
+            setTimeout(()=>{lettersLeft.innerHTML = "lets try again"}, 1000);
+            
+            setTimeout(() => {restart()}, 2000)
          } else if (turn +1 === playersWord.length && is_same && turn < 4) { // everything is correct but you havent finsihed the word
             console.log('next turn')
             turn++; // progress to the next turn
-            clearWord()
-            //remove the html
-            playersWord = [];//reset the array for the next turn
-            myGuess = [];
-            //remove the html
+            clearWord();
             simonsTurn = true;//its simons turn again
             lettersLeft.innerHTML = 5 - turn; //counter will go down
             gameRound(); //reset the interval timer
             
         } else if (playersWord.length === 5 && is_same) { //if the array is the correct length and letters then you win
             
-            lettersLeft.innerHTML = 'win';
+            lettersLeft.innerHTML = 'you win';
             win = true;
+
+            clearWord()
             // bounceCircles();//visual affect
             //add a modal to offer another word/ round
         }
     }
     
-
-
-    // function bounceCircles() {//highlights all the circles so they are bigger and brighter
-    //     document.querySelector(".circles").classList.add('highlighted')
+    // const winner = document.querySelector('.mod2');
+    // const again = document.querySelector('.again');
+    
+    // const openWinner = () => {
+    //     modal.style.display = 'block';
     // }
+    
+    // again.addEventListener("click", () => { 
+    //     modal.style.display = 'none';
+    //     restart();
+    //  });
+
     
