@@ -13,7 +13,7 @@ body {
 .titleSpot {
     margin: auto;
     height: 20vh;
-    background: black;
+    background: grey;
     color: white;
     font-size: 40px;
     text-align: center;
@@ -128,7 +128,7 @@ body {
     display: none;
     z-index: 1;
     width: 50%;
-    height: 50%;
+    height: 70%;
     background-color: lightblue;
     color:black;
     font-size: 20px;
